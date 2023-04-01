@@ -71,9 +71,173 @@
 	   + styleUrls: Các files css mà component này sử dụng
    + Command
      ng g c <NameComponent>
+	 ng generate component <NameComponent>
 	 
 4. BUILD - DEPLOY
    + ng build / ng build --base-href /<nameproject>/ --deploy-url /<nameproject>/ --configuration production
      => dist 
 	      
+5. MODULE
+   + module.ts
+     * @NgModule
+	   1. declarations: 
+	      + Khai báo các component chúng ta sẽ dùng ở trên template (thường là component, directive, pipe)
+		  + chỉ có thể được sử dụng trong nội bộ module đó
+		  
+	   2. providers:
+	      + Khai báo các service dùng trong toàn bộ các module (dù có lazy loading module hay không vẫn available)
+		  + Sử dụng được trong toàn bộ dự án. Nghĩa là các service chỉ cần được khai báo ở bất kỳ module con nào, 
+		    khi import vào module chính sẽ PUBLIC SINGLE INSTANCE trên toàn bộ module con và module chính
+			=> Nếu module được import để sử dụng các service thì chúng ta chỉ nên import nó 1 lần trong module chính
+			
+	   3. imports: 
+	      + Là một mảng các module cần thiết để được sử dụng trong ứng dụng. Nó cũng có thể được sử dụng bởi các component trong mảng
+	   4. boostrap:
+          + Định nghĩa component gốc của module
+		  
+   + Lazy Loading Module:
+     * Nghĩa là khi người dùng vào những đường dẫn của từng feature thì module đó mới được load 
+	 * Những service chúng ta provide trong lazy load module sẽ có tính chất:
+	   1. Nó chỉ available trong lazy load module trở xuống, các module bên ngoài sẽ không thấy
+	   2. Nếu lazy load module provide service giống AppModule thì nó sẽ tạo ra instance mới
+	   
+	 * VD:
+	   --- Admin module
+	    admin.routing.ts
+			const routes: Routes = [
+			  {
+				path: 'users',
+				component: UsersListComponent,
+			  },
+			  {
+				path: 'users/:id',
+				component: UserDetailComponent
+			  },
+			  {
+				path: '',
+				component: AdminHomeComponent,
+			  }
+			];
+
+			@NgModule({
+			  declarations: [],
+			  imports: [
+				CommonModule,
+				RouterModule.forChild(routes)
+			  ],
+			  exports: [RouterModule]
+			})
+			export class AdminRouting { }
+		------------------------------------------------------------
+		admin.module.ts
+			@NgModule({
+			  declarations: [UsersListComponent, UserDetailComponent, AdminHomeComponent],
+			  imports: [
+				CommonModule,
+				AdminRouting
+			  ],
+			  providers: [
+				AdminService
+			  ]
+			})
+			export class AdminModule { }
+		------------------------------------------------------------			
+	   --- App module:
+	    app-routing.module.ts
+			const routes: Routes = [
+			  {
+				path: '',
+				children: [
+				  {
+					path: 'admin',
+					loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)
+				  },
+				  {
+					path: 'teacher',
+					loadChildren: () => import('./teacher/teacher.module').then(m => m.TeacherModule)
+				  },
+				  {
+					path: 'student',
+					loadChildren: () => import('./student/student.module').then(m => m.StudentModule)
+				  }
+				]
+			  }
+			];
+
+			@NgModule({
+			  imports: [RouterModule.forRoot(routes)],
+			  exports: [RouterModule]
+			})
+			export class AppRoutingModule { }
+		------------------------------------------------------------
+		app.module.ts
+			@NgModule({
+			  declarations: [
+				AppComponent
+			  ],
+			  imports: [
+				BrowserModule,
+				AppRoutingModule,
+			  ],
+			  providers: [],
+			  bootstrap: [AppComponent]
+			})
+			export class AppModule { }
+		
+   + PreLoad
+     * Cải thiện trải nghiệm người dùng khi lazy load module
+	 * Trường hợp với các thiết bị di động hay những kết nối băng thông thấp thì việc preload có thể không phải là lựa chọn đúng đắn
+	 * VD:
+	    app.routing.ts
+			imports: [
+				RouterModule.forRoot(
+				  routes, { preloadingStrategy: PreloadAllModules }
+				)
+			],
+	 * Custom PreloadingStrategy
+	    custom-preloading.ts
+			import 'rxjs/add/observable/of';
+			import { Injectable } from '@angular/core';
+			import { PreloadingStrategy, Route } from '@angular/router';
+			import { Observable } from 'rxjs/Observable';
+
+			@Injectable()
+			export class CustomPreloadingStrategy implements PreloadingStrategy {
+			  preloadedModules: string[] = [];
+
+			  preload(route: Route, load: () => Observable<any>): Observable<any> {
+				if (route.data && route.data['preload']) {
+				  this.preloadedModules.push(route.path);
+				  return load();
+				} else {
+				  return Observable.of(null);
+				}
+			  }
+			}
+		------------------------------------------------------------
+		
+		app.routing.ts
+			const routes: Routes = [
+			  {
+				path: '',
+				children: [
+				  {
+					path: 'admin',
+					loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule),
+					data: { preload: true }
+				  },
+				]
+			  }
+			];
+			@NgModule({
+			  imports: [RouterModule.forRoot(routes, { preloadingStrategy: CustomPreloadingStrategy })],
+			  exports: [RouterModule],
+			  providers: [CustomPreloadingStrategy]
+			})
+			export class AppRoutingModule { }
+			
+   + Command
+     ng g m <NameModule>
+     ng generate module <NameModule>	
+     ng generate module <NameModule> --routing	 
  
