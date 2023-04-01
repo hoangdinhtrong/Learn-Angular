@@ -1,0 +1,47 @@
+======================================================================================================================================================
+====================================================OOP - Object Oriented Programming=================================================================
+- Mọi thứ đều là object, object có thuộc tính và hành vi:
+  + Atrribute, DataMember,Property: Là những thuộc tính của object
+  + Methods, Function, Behavior  : Là những hành vi của object
+
+- Class:
+  + Là một bản thiết kế của đối tượng trong code
+  
+======================================================================================================================================================
+====================================================WEB APPS==========================================================================================
+- DNS là gì?
+  + Hệ thống phân giải tên miên (Domain name system)
+  + Là cuốn sách tra cứu địa chỉ của domain name
+  
+- Domain Name là gì?
+  + Tên nhà mà không cần biết địa chỉ (Không được trùng)
+  
+- Hosting là gì?
+  + Dịch vụ lưu trữ web (WEB hosting service)
+  + Giống như một nơi ở mà chứa các tập tin
+  
+- IP là gì?
+  + Địa chỉ của máy, server
+  
+======================================================================================================================================================
+====================================================ANGULAR===========================================================================================
+1. SET UP ENVIRONMET
+   + Install NodeJs (npm)
+     node -v
+	 npm -v
+	 
+   + Install Angular Cli
+     1. npm install @angular/cli
+	 2. npm install -g @angular/core @angular/cli
+	 3. ng --version
+	 4. ng new <NameProject>
+	   * =>  y => Select SCSS => Enter
+	   * if error: run: npm config set legacy-peer-deps true
+	 5.npm start / ng server
+	 
+   + Install VS Code
+     code -v
+   + Install Git bash
+     git --version
+	 
+ 
