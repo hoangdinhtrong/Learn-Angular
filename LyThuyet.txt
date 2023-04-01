@@ -57,5 +57,19 @@
 	   2. assets: chứa các hình ảnh, video, icon, ...
 	   3. index.html: page chính
 	      + <app-root></app-root> : component/thẻ tự đặt tên (thường là app component)
+		  
+3. COMPONENTS
+   + Là thành phần được chia nhỏ, có thể chạy độc lập và được tạo ra nhắm mục đích tái sử dụng
+   + Các thành phần:
+     * component.html: chứa code html
+	 * component.scss: chưa css cho component
+	 * component.spect.ts: nơi viết unit test/ test
+	 * component.ts: nơi viết logic cho component băng typescript
+	   @Component
+	   + selector: đặt tên tag cho component này
+	   + templateUrl: html của component này ở đâu
+	   + styleUrls: Các files css mà component này sử dụng
+   + Command
+     ng g c <NameComponent>
 	      
  
