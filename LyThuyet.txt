@@ -38,10 +38,24 @@
 	   * =>  y => Select SCSS => Enter
 	   * if error: run: npm config set legacy-peer-deps true
 	 5.npm start / ng server
+	 6. ng build
 	 
    + Install VS Code
      code -v
    + Install Git bash
      git --version
 	 
+2. PROJECT STRUCTURE
+   + Node_Module:
+     * gitignore: không đẩy code lên git
+	 * node_module: chứa các thư viện, sau khi build sẽ lấy các thư viện đó ra để 
+	 * angular.json: tùy chỉnh angular, add css, javascript ở đây
+	 * Package.json: chứa các thư viện đã cài đặt
+	 * tsconfig.json: cài đặt compie typescript
+	 * src
+	   1. environments: chứa các file config environment is develop or production
+	   2. assets: chứa các hình ảnh, video, icon, ...
+	   3. index.html: page chính
+	      + <app-root></app-root> : component/thẻ tự đặt tên (thường là app component)
+	      
  
