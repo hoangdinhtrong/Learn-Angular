@@ -71,5 +71,9 @@
 	   + styleUrls: Các files css mà component này sử dụng
    + Command
      ng g c <NameComponent>
+	 
+4. BUILD - DEPLOY
+   + ng build / ng build --base-href /<nameproject>/ --deploy-url /<nameproject>/ --configuration production
+     => dist 
 	      
  
