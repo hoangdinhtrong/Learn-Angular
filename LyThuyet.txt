@@ -505,3 +505,108 @@
 				
 			}
 		}
+		
+====================================================================================================================================================== 
+7. PIPE
+   + Định dạng dữ liệu (price, datetime,...)
+   + DatePipe
+     * Syntax {{ value | date [ : format [ : timezone [ : locale ] ]] }}
+	 * format, timezone, locale : string (default is underfined)
+	 
+   + UpperCasePipe:
+     * Syntax {{ value | uppercase }}
+	 
+   + LowerCasePipe:
+     * Syntax {{ value | lowercase }}
+	 
+   + CurencyPipe:
+     * Syntax {{ value | curency [ : curencyCode [ : display [ : digitsInfo [ : locale ] ] ] ] }}
+	 
+   + DecimalPipe:
+     * Syntax {{ value | number [ : digitsInfo [ : locale ]]  }}
+	 
+   + PercentPipe:
+     * Syntax {{ value | percent [ : digitsInfo [ : locale ]]  }}
+	 
+   + Custom Pipe:
+     * Command: ng generate pipe <NameCustomPipe>
+	 * VD: ng generate pipe OnSale
+	   on-sale.pipe.ts
+		import { Pipe, PipeTransform } from '@angular/core';
+		
+		@Pipe({
+			name: 'onSale'
+		})
+		
+		export class OnSalePipe implements PipeTransform {
+			transform(value: unknown, ...args: unknown[]): string{
+			    if(value){
+					return 'On Sale'
+				}
+				return '';
+			}
+		
+		}
+		
+		------------------------------------------------------------
+	   home.component.html
+		<div>
+			<h1> Đây là component home </h1>
+			<h2> Trái cây </h2>
+			<div *ngFor="let item of traicay; let i = index">
+				<li>{{ i+1 }}. {{ item    }}</li>
+			</div>
+			
+			<table>
+				<tr>
+					<th>STT</th>
+					<th>Name</th>
+					<th>Price</th>
+				</tr>
+				
+				<tr *ngFor="let item of traicay2; let i = index">
+					<td>{{ i+1 }}</td>
+					<td>{{ item.ten }}</td>
+					<td>
+						<span [ngClass]="{'so-am' : item.gia < 0}">{{ item.gia }}</span>
+					</td>
+					<td>
+						<span>{{ iten.haGia | onSale | uppercase }}</span>
+					</td>
+				</tr>
+			</table>
+		</div>
+		------------------------------------------------------------
+	   home.component.scss
+	    .th, td {
+			min-width: 100px;
+		}
+	   
+	    .so-am{
+			color: red;
+		}
+		------------------------------------------------------------
+	   home.component.ts
+	    import {Component, OnInit } from '@angular/core';
+		
+		@Component({
+			selector: 'app-home',
+			templateUrl: './home.component.html',
+			styleUrls: ['./home.component.scss']
+		})
+		
+		export class HomeComponent implements OnInit{
+			public name: string = 'Trong Hoang';
+			public age: number = 15;
+			public traicay = ['Tao' , 'Nho'];
+			public traicay2 = [
+				{ ten: Tao, gia: 12, haGia: true },
+				{ ten: Nho, gia: -3, haGia: false }
+			]
+		
+			constructor() {}
+			
+			ngOnInit(): void {
+				
+			}
+		}
