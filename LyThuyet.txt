@@ -30,6 +30,7 @@
      node -v
 	 npm -v
 	 
+   ***************************************************************************************************************************************************
    + Install Angular Cli
      1. npm install @angular/cli
 	 2. npm install -g @angular/core @angular/cli
@@ -40,11 +41,15 @@
 	 5.npm start / ng server
 	 6. ng build
 	 
+   ***************************************************************************************************************************************************
    + Install VS Code
      code -v
+	 
+   ***************************************************************************************************************************************************
    + Install Git bash
      git --version
 	 
+======================================================================================================================================================
 2. PROJECT STRUCTURE
    + Node_Module:
      * gitignore: không đẩy code lên git
@@ -58,8 +63,11 @@
 	   3. index.html: page chính
 	      + <app-root></app-root> : component/thẻ tự đặt tên (thường là app component)
 		  
+======================================================================================================================================================
 3. COMPONENTS
    + Là thành phần được chia nhỏ, có thể chạy độc lập và được tạo ra nhắm mục đích tái sử dụng
+   
+   ***************************************************************************************************************************************************
    + Các thành phần:
      * component.html: chứa code html
 	 * component.scss: chưa css cho component
@@ -69,14 +77,18 @@
 	   + selector: đặt tên tag cho component này
 	   + templateUrl: html của component này ở đâu
 	   + styleUrls: Các files css mà component này sử dụng
+	   
+   ***************************************************************************************************************************************************
    + Command
      ng g c <NameComponent>
 	 ng generate component <NameComponent>
 	 
+======================================================================================================================================================
 4. BUILD - DEPLOY
    + ng build / ng build --base-href /<nameproject>/ --deploy-url /<nameproject>/ --configuration production
      => dist 
-	      
+	     
+====================================================================================================================================================== 
 5. MODULE
    + module.ts
      * @NgModule
@@ -93,8 +105,9 @@
 	   3. imports: 
 	      + Là một mảng các module cần thiết để được sử dụng trong ứng dụng. Nó cũng có thể được sử dụng bởi các component trong mảng
 	   4. boostrap:
-          + Định nghĩa component gốc của module
-		  
+          + Định nghĩa component gốc của module 
+   
+   ***************************************************************************************************************************************************
    + Lazy Loading Module:
      * Nghĩa là khi người dùng vào những đường dẫn của từng feature thì module đó mới được load 
 	 * Những service chúng ta provide trong lazy load module sẽ có tính chất:
@@ -184,6 +197,7 @@
 			})
 			export class AppModule { }
 		
+   ***************************************************************************************************************************************************
    + PreLoad
      * Cải thiện trải nghiệm người dùng khi lazy load module
 	 * Trường hợp với các thiết bị di động hay những kết nối băng thông thấp thì việc preload có thể không phải là lựa chọn đúng đắn
@@ -236,8 +250,258 @@
 			})
 			export class AppRoutingModule { }
 			
+   ***************************************************************************************************************************************************
    + Command
      ng g m <NameModule>
      ng generate module <NameModule>	
      ng generate module <NameModule> --routing	 
  
+======================================================================================================================================================
+6. DATA BINDING
+   + VALUE BINDING:
+     * Kết nối giá trị từ code ra HTML
+	 * VD:
+	   home.component.html
+		<div>
+			<h1> Đây là component home </h1>
+			<h2>Chào ban {{ name }}</h2>
+		</div>
+		------------------------------------------------------------
+	   home.component.ts
+	    import {Component, OnInit } from '@angular/core';
+		
+		@Component({
+			selector: 'app-home',
+			templateUrl: './home.component.html',
+			styleUrls: ['./home.component.scss']
+		})
+		
+		export class HomeComponent implements OnInit{
+			public name = 'Trong Hoang';
+		
+			constructor() {}
+			
+			ngOnInit(): void {
+				
+			}
+		}
+		
+   ***************************************************************************************************************************************************
+   + PROPERTIES BINDING
+     * Kết nối giá trị từ code ra HTML vào thẻ Input
+	 * VD:
+	   home.component.html
+		<div>
+			<h1> Đây là component home </h1>
+			<h2>Chào ban {{ name }}</h2>
+			<input value="{{ name }}" />
+			<br />
+			<input [value]="name" title="đây là {{ name }}" />
+			<br />
+			<input [value]="name" [title]="'đây là ' + name" />
+		</div>
+		------------------------------------------------------------
+	   home.component.ts
+	    import {Component, OnInit } from '@angular/core';
+		
+		@Component({
+			selector: 'app-home',
+			templateUrl: './home.component.html',
+			styleUrls: ['./home.component.scss']
+		})
+		
+		export class HomeComponent implements OnInit{
+			public name = 'Trong Hoang';
+		
+			constructor() {}
+			
+			ngOnInit(): void {
+				
+			}
+		}
+		
+   ***************************************************************************************************************************************************
+   + *ngIf
+     * Dùng if else trong HTML
+	 * VD:
+	   home.component.html
+		<div>
+			<h1> Đây là component home </h1>
+			<h2>Chào ban {{ name }}</h2>
+			<input value="{{ name }}" />
+			<br />
+			<h2 *ngIf="age > 18">Bạn đã già</h2>
+			<br />
+			<h2 *ngIf="age <= 18">Bạn còn trẻ lắm</h2>
+		</div>
+		------------------------------------------------------------
+	   home.component.ts
+	    import {Component, OnInit } from '@angular/core';
+		
+		@Component({
+			selector: 'app-home',
+			templateUrl: './home.component.html',
+			styleUrls: ['./home.component.scss']
+		})
+		
+		export class HomeComponent implements OnInit{
+			public name: string = 'Trong Hoang';
+			public age: number = 15;
+		
+			constructor() {}
+			
+			ngOnInit(): void {
+				
+			}
+		}
+	 
+   ***************************************************************************************************************************************************
+   + EVENT BINDING
+     * Binding event
+	 * VD:
+	   home.component.html
+		<div>
+			<h1> Đây là component home </h1>
+			<h2>Chào ban {{ name }}</h2>
+			<input type="Text" [value]="name" />
+			<br />
+			<button (click) = "resetName()" >Reset Name </button>
+		</div>
+		------------------------------------------------------------
+	   home.component.ts
+	    import {Component, OnInit } from '@angular/core';
+		
+		@Component({
+			selector: 'app-home',
+			templateUrl: './home.component.html',
+			styleUrls: ['./home.component.scss']
+		})
+		
+		export class HomeComponent implements OnInit{
+			public name: string = 'Trong Hoang';
+			public age: number = 15;
+		
+			constructor() {}
+			
+			ngOnInit(): void {
+				
+			}
+			
+			public resetName(): void{
+				console.log('reset name');
+			
+			}
+		}
+		
+		
+   ***************************************************************************************************************************************************
+   + TWO WAY - BINDING
+     * ngModel
+	   1. Là một directive dùng đểliên kết dữ liệu với client
+	   2. Syntax: [()] = [] (binds attribute) + () (binds event)
+	   3. Need import { FormsModule } from '@angular/forms';
+	   
+   ***************************************************************************************************************************************************
+   + ng-template
+     * if then else trong HTML
+	 * VD:
+	   home.component.html
+		<div>
+			<h1> Đây là component home </h1>
+			<h2>Chào ban {{ name }}</h2>
+			<input type="Text" [(ngModel)]="age" />
+			<br />
+			
+			<div *ngIf="age <= 18 then tre; else gia">
+				
+			</div>
+			
+			<ng-template #tre><h2>Bạn đã già</h2></ng-template>
+			<ng-template #gia><h2>Bạn còn trẻ lắm</h2></ng-template>
+		</div>
+		------------------------------------------------------------
+	   home.component.ts
+	    import {Component, OnInit } from '@angular/core';
+		
+		@Component({
+			selector: 'app-home',
+			templateUrl: './home.component.html',
+			styleUrls: ['./home.component.scss']
+		})
+		
+		export class HomeComponent implements OnInit{
+			public name: string = 'Trong Hoang';
+			public age: number = 15;
+		
+			constructor() {}
+			
+			ngOnInit(): void {
+				
+			}
+		}
+	 
+   ***************************************************************************************************************************************************
+   + *ngFor
+     * Vòng lặp trong HTML
+	 * VD:
+	   home.component.html
+		<div>
+			<h1> Đây là component home </h1>
+			<h2> Trái cây </h2>
+			<div *ngFor="let item of traicay; let i = index">
+				<li>{{ i+1 }}. {{ item    }}</li>
+			</div>
+			
+			<table>
+				<tr>
+					<th>STT</th>
+					<th>Name</th>
+					<th>Price</th>
+				</tr>
+				
+				<tr *ngFor="let item of traicay2; let i = index">
+					<td>{{ i+1 }}</td>
+					<td>{{ item.ten }}</td>
+					<td>
+						<span [ngClass]="{'so-am' : item.gia < 0}">{{ item.gia }}</span>
+					</td>
+					<td>
+						<span *ngIf="item.haGia">On Sale</span>
+					</td>
+				</tr>
+			</table>
+		</div>
+		------------------------------------------------------------
+	   home.component.scss
+	    .th, td {
+			min-width: 100px;
+		}
+	   
+	    .so-am{
+			color: red;
+		}
+		------------------------------------------------------------
+	   home.component.ts
+	    import {Component, OnInit } from '@angular/core';
+		
+		@Component({
+			selector: 'app-home',
+			templateUrl: './home.component.html',
+			styleUrls: ['./home.component.scss']
+		})
+		
+		export class HomeComponent implements OnInit{
+			public name: string = 'Trong Hoang';
+			public age: number = 15;
+			public traicay = ['Tao' , 'Nho'];
+			public traicay2 = [
+				{ ten: Tao, gia: 12, haGia: true },
+				{ ten: Nho, gia: -3, haGia: false }
+			]
+		
+			constructor() {}
+			
+			ngOnInit(): void {
+				
+			}
+		}
