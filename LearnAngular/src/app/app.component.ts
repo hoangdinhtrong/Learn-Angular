@@ -7,4 +7,14 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'LearnAngular';
+
+  public name: string = 'Hoang Dinh Trong';
+
+  constructor() { }
+
+  public resetName(): void {
+    console.log('reset name');
+
+    this.name = '';
+  }
 }
