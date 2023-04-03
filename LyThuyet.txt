@@ -724,3 +724,173 @@
 				this.districts = this.vietnameData.find(x => x.city === city)?.district || [];
 			}
 		}
+		
+====================================================================================================================================================== 
+9. ROUTING
+   + use routerLink
+   + Use <router-outlet></router-outlet>
+   
+====================================================================================================================================================== 
+10. ngSwitch
+    + Lựa chọn trong HTML
+	+ VD:
+	  <ul [ngSwitch]="LoginName">
+		<li *ngSwitchCase="'user'">
+			<p>User is logged in...</p>
+		</li>
+		<li *ngSwitchCase="'admin'">
+			<p>Admin is logged in...</p>
+		</li>
+		<li *ngSwitchDefault>
+			<p>Sign In</p>
+		</li>
+	  </ul>
+	  
+====================================================================================================================================================== 
+11. DIRECTIVES
+    + Là một class add thêm hành vi (behavior) cho element
+	+ Component directive
+	+ Attribute directive
+	+ Structural directive: ngFor, ngIf, ngSwitch
+	+ Command: ng g directive <nameDirective>
+	
+====================================================================================================================================================== 
+12. SERVICES
+    + Command: ng g service <nameService>
+	
+	
+====================================================================================================================================================== 
+13. TEMPLATE DRIVEN FORMS 
+    + FormsModule
+	+ VD:
+	  * html
+		<form (ngSubmit)="submitForm()">
+			Name: <input type="Text" [(ngModel)]="name" [ngModelOptions]="{ standalone: true }" />
+			<br />
+			<!-- <button (click)="submitForm()">Submit 1 </button> -->
+			<button type="submit">Submit 2 </button>
+		</form>
+		
+		---------------------------------------------------------------------------------------------------------
+	  * ts:
+		
+		public name = '';
+		
+		public submitForm(): void{
+			console.log('name: ' + this.name);
+		}
+		
+====================================================================================================================================================== 
+14. REACTIVE FORMS
+    + ReactiveFormsModule
+	+ VD:
+	  * html
+		<form [formGroup]="formData" (ngSubmit)="submitForm()">
+			Name: <input type="Text" formControlName="name" />
+			<div *ngIf="!formData.controls.name.valid" style="color: red">
+				Name is required
+			</div>
+			<br />
+			Name: <input type="number" formControlName="age" />
+			<br />
+			<!-- <button (click)="submitForm()">Submit 1 </button> -->
+			<button type="submit" [disabled]="!formData.valid">Submit 2 </button>
+		</form>
+		
+		---------------------------------------------------------------------------------------------------------
+	  * ts:
+		
+		// public formData: FormGroup = new FormGroup({
+		//	 name: new FormGroup(''),
+		//	 age: new FormGroup('')
+		// });
+		
+		public formData = this.formBuilder.group({
+			name: ['', Validator: required],
+			age: ['']
+		});
+		
+		constructor(private formBuilder: FormBuilder){}
+		
+		public submitForm(): void{
+			console.log('name: ' , formData);
+		}
+		
+		
+====================================================================================================================================================== 
+15. OBSERVABLE 
+    + Đăng ký dữ liệu trả về của service
+	+ khi subscribe thì sẽ trả về kiểu đăng ký đó, 
+	
+	
+====================================================================================================================================================== 
+16. PARENT - CHILD
+    + Child Component:
+      * @Input : đầu vào		
+	  * Output: đầu ra
+	  
+	+ VD:
+		cha.component.html
+			
+			Đây là component cha:
+			<br />
+			<p>{{ chaMessage }}</p>
+			
+			<br />
+			<button (click)="choTien()">Cho tiền </button>
+			<br />
+			<app-con #thangTeo name="Tèo" (conChao)="conChao(#event)"></app-con>
+			
+			<br />
+			<app-con #thangTi name="Tí" (conChao)="conChao($event)"></app-con>
+			
+		----------------------------------------------------------------------------------
+		cha.component.ts
+			export class ChaComponent implements OnInit {
+				@ViewChild('thangTeo') thangTeo: ConComponent | underfined;
+				@ViewChild('thangTi') thangTi: ConComponent | underfined;
+			
+			
+				public chaMessage = '';
+				
+				constructor(){}
+				
+				public ngOnInit(): void {}
+				
+				public conChao(name: string){
+					this.chaMessage = 'Chào con (' + name + ')';
+				}
+				
+				public choTien() : void {
+					this.thangTeo?.nhanTien(5);
+					this.thangTi?.nhanTien(25);
+				
+				}
+			
+			}
+			
+		----------------------------------------------------------------------------------
+		con.component.html
+			<span>Con tên là: {{ name }}</span> <button (click)="chaoCha()">Chào cha</button>
+			
+	
+		----------------------------------------------------------------------------------
+		con.component.ts
+			export class ConComponent implements OnInit {
+				@Input() name: string = '';
+				@Output() conChao: EventEmitter<any> = new EventEmitter();
+				
+				constructor(){}
+				
+				public ngOnInit(): void {}
+				
+				public chaoCha(): void {
+					console.log('Gọi parent cha');
+					this.conChao.emit(this.name);
+				}
+			
+				public nhanTien(amount: number): void {
+					console.log('Con là +' + this.name + '. Cảm ơn cha đã cho con ' + amout + 'đồng');
+					
+				}
+			}
