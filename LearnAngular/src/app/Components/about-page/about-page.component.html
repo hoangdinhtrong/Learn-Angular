@@ -1,0 +1,14 @@
+<p>about-page works!</p>
+<ul [ngSwitch]="LoginName">
+    <li *ngSwitchCase="'user'">
+        <p>User is logged in...</p>
+    </li>
+    
+    <li *ngSwitchCase="'admin'">
+        <p>User is logged in...</p>
+    </li>
+    
+    <li *ngSwitchDefault>
+        <p>Please login ...</p>
+    </li>
+</ul>
