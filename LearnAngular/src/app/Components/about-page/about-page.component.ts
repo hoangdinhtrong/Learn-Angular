@@ -11,4 +11,8 @@ export class AboutPageComponent implements OnInit {
 
   constructor() {}
   ngOnInit(): void {}
+
+  public changeName(name: any): void{
+    this.LoginName = name.target.value;
+  }
 }

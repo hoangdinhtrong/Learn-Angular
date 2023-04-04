@@ -1,11 +1,15 @@
 <p>about-page works!</p>
+
+<br />
+<input type="text" (change)="changeName($event)" />
+
 <ul [ngSwitch]="LoginName">
     <li *ngSwitchCase="'user'">
         <p>User is logged in...</p>
     </li>
     
     <li *ngSwitchCase="'admin'">
-        <p>User is logged in...</p>
+        <p>Admin is logged in...</p>
     </li>
     
     <li *ngSwitchDefault>
