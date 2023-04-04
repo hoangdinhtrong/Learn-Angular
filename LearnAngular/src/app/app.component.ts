@@ -8,3 +8,5 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'LearnAngular';
 }
+
+//// Command to create new service: ng g service <name_service>
