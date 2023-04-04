@@ -7,4 +7,11 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'LearnAngular';
+
+  public MyColor: string = 'red';
 }
+//// Some directive
+//// Component Directive
+//// Attribute Directive
+//// Structural Directive
+//// Command to create new directive: ng g directive <name_directive>
