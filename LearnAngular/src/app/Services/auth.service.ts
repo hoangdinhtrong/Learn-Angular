@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
@@ -8,7 +8,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class AuthService {
   private loggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private route: ActivatedRoute) { }
 
   public logout(): void{
     console.log('Logout action');
@@ -20,7 +20,15 @@ export class AuthService {
     console.log('login with ', user);
     if(user !== ''){
       this.loggedIn.next(true);
-      this.router.navigate(['/home']);
+
+      const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
+      console.log(returnUrl);         
+      if (returnUrl !== '') {
+        this.router.navigate([returnUrl]);
+      }
+      else{
+        this.router.navigate(['/home']);
+      }
     }
   }
 

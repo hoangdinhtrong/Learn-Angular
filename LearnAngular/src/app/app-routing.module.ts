@@ -10,7 +10,7 @@ const routes: Routes = [
   {path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
   {path: 'about', component: AboutComponent, canActivate: [AuthGuard]},
   {path: 'login', component: LoginComponent},
-  {path: '', redirectTo: 'login', pathMatch:'full'},
+  {path: '', redirectTo: 'home', pathMatch:'full'},
   {path: '**', component: PageNotPoundComponent},
 ];
 
